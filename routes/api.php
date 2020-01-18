@@ -42,10 +42,26 @@ Route::get('/getstylebyid/{id}/{identifier}', function ($id,$identifier) {
 Route::put('/updatestyle', function (Request $request) {
 	if ($request->identifier == "style") {
 
+
 		$data = $request->stylebyid;
+
 		$style = Productstyle::find($data['id']);
 		$style->name = $data['name'];
 		$style->title = $data['title'];
+
+		if($request->image)
+       	{
+
+        	$filename = str_random(40); 
+
+        	$imagePath = '/image/' . $filename;
+
+        	Image::make($request->image)->save(public_path($imagePath));
+
+        	$style->image = $filename;
+        }
+       	
+
 		$style->save();
 
 		return "Updated Successfully";
@@ -56,6 +72,19 @@ Route::put('/updatestyle', function (Request $request) {
 		$style = Styleoption::find($data['id']);
 		$style->name = $data['name'];
 		$style->title = $data['title'];
+
+		if($request->image)
+       	{
+
+        	$filename = str_random(40); 
+
+        	$imagePath = '/image/' . $filename;
+
+        	Image::make($request->image)->save(public_path($imagePath));
+
+        	$style->image = $filename;
+        }
+
 		$style->save();
 
 		return "Updated Successfully";
