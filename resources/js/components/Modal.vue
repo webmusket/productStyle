@@ -1,6 +1,6 @@
 <template>
   <div>
-      <modal v-if="open">
+      <modal>
           <transition>
               <div class="bg-white rounded-lg shadow-lg" style="width: 600px;">
                 <form enctype="multipart/form-data"  @submit.prevent="updateStyle()">
@@ -52,7 +52,7 @@
                     <div  class="bg-30 px-6 py-3 flex">
                         <div class="w-full  flex justify-end">
                             <div class="ml-auto">
-                                <button @click="close()" type="button" class="btn text-80 font-normal h-9 px-3 mr-3 btn-link">
+                                <button @click="$emit('closeisopen')" type="button" class="btn text-80 font-normal h-9 px-3 mr-3 btn-link">
                                     Cancel
                                 </button>
                                 <button type="submit" class="btn btn-default btn-primary">
@@ -72,7 +72,7 @@
 
 <script>
 export default {
-    props: ['isOpen','stylebyid','identifier'],
+    props: ['stylebyid','identifier'],
     data: function() {
       return {
         // open: this.modalclose
@@ -86,10 +86,10 @@ export default {
 
     },
     methods:{
-          close(){
-              this.Open = false
-              this.$emit('childToParent', false)
-          },
+          // close(){
+          //     this.Open = false
+          //     this.$emit('childToParent', false)
+          // },
 
           onChange(e) {
               let files = e.target.files || e.dataTransfer.files;

@@ -20,12 +20,68 @@ use App\Styleoption;
 //     //
 // });
 
-Route::get('/getstyles', function () {
-	$styles = Productstyle::with('styleoptions')->get();
+
+Route::get('/getfabrics', function () {
+	$getfabrics = App\Rawmaterial::get();
     return response()->json([
-	    'styles' => $styles,
+	    'getfabrics' => $getfabrics,
 	]);
 });
+
+Route::get('/getfolders', function () {
+	$path = public_path('upload');
+	$folders = array_map('basename', File::directories($path));
+    return response()->json([
+	    'folders' => $folders,
+	]);
+});
+
+
+Route::post('/formSubmit', function (Request $request) {
+
+
+	// $fileName = time().'.'.$request->file->getClientOriginalExtension();
+
+	// Zipper::make($fileName)->extractTo(public_path('upload/'.$request->name));
+	 Zipper::make($request->file)->extractTo(public_path('upload/'.$request->name));
+
+    // $request->file->move(public_path('upload'), $fileName);
+
+    return response()->json(['success'=>'You have successfully upload file.']);
+
+});
+
+
+
+
+Route::get('/jacketstyles', function () {
+	$jacketstyles = Productstyle::with('styleoptions')->where('type','jacket')->where('cus_type','style')->get();
+    return response()->json([
+	    'jacketstyles' => $jacketstyles,
+	]);
+});
+
+
+// Route::get('/jacketfabrics', function () {
+// 	$jacketfabrics = Productstyle::with('styleoptions')->where('type','jacket')->where('cus_type','fabric')->get();
+//     return response()->json([
+// 	    'jacketfabrics' => $jacketfabrics,
+// 	]);
+// });
+
+Route::get('/jacketaccents', function () {
+	$jacketaccents = Productstyle::with('styleoptions')->where('type','jacket')->where('cus_type','accent')->get();
+    return response()->json([
+	    'jacketaccents' => $jacketaccents,
+	]);
+});
+
+
+
+
+
+
+
 
 Route::get('/getstylebyid/{id}/{identifier}', function ($id,$identifier) {
 	if ($identifier == "style") {
@@ -41,7 +97,6 @@ Route::get('/getstylebyid/{id}/{identifier}', function ($id,$identifier) {
 
 Route::put('/updatestyle', function (Request $request) {
 	if ($request->identifier == "style") {
-
 
 		$data = $request->stylebyid;
 
